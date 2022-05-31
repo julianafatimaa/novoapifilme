@@ -1,4 +1,4 @@
-import { alteraimagem, inserirFilme } from '../repository/filmeRepository.js'
+import { alteraimagem, inserirFilme, removerFilme } from '../repository/filmeRepository.js'
 
 import multer from 'multer'
 
@@ -73,6 +73,23 @@ server.put('/filme/:id/capa', upload.single('harry') ,async(req,resp) => {
         resp.status(400).send({
             erro:err.message
         })
+    }
+})
+
+server.delete('/filme/:id', async (req, resp) => {
+    try{
+    const { id } = req.params;
+
+    const resposta = await removerFilme(id);
+    if (resposta != 1)
+        throw new Error ('filme não saiu!');
+
+    resp.status(204).send();
+    }
+    catch(err){
+        resp.status(400).send({
+            erro:err.message
+    })
     }
 })
 

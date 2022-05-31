@@ -29,3 +29,13 @@ export  async function alteraimagem(imagem, id){
     const [resposta] =  await con.query(comando, [imagem,id]);
       return resposta.affectedRows;
 }
+
+export async function removerFilme(id) {
+    const comando = `
+    DELETE FROM   tb_filme 
+          WHERE   id_filme = ?`;
+
+  const [resposta] = await con.query(comando, [id]);
+  return resposta.affectedRows;
+
+}
