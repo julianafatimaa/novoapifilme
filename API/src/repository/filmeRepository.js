@@ -39,3 +39,52 @@ export async function removerFilme(id) {
   return resposta.affectedRows;
 
 }
+
+export async function buscarPorid(id){
+  const comando =
+ ` SELECT id_filme		id,
+	  nm_filme	        nome,
+    vl_avaliacao		  avaliacao,
+	  ds_sinopse		    sinopse,
+    dt_lancamento	    lancamento,
+    bt_disponivel   	disponivel,
+    img_filme         capa
+    FROM tb_filme
+  WHERE id_filme			= ?`;
+    
+     const[linhas] = await con.query(comando,[id]);
+        return linhas[0];
+      }
+
+   export async function buscarPorNome(nome){
+     const comando =
+     `SELECT id_filme			id,
+        nm_filme			    nome,
+        vl_avaliacao		  avaliacao,
+        dt_lancamento	    lancamento,
+        bt_disponivel	    disponivel
+      FROM tb_filme 
+      WHERE nm_filme like ?`;
+
+        const[linhas] = await con.query(comando,[`%${nome}%`]);
+        return linhas;      
+      }
+
+
+  export async function alterarFilme(id,filme){
+    console.log(id);
+    console.log(filme);
+
+    const comando =
+    `UPDATE tb_filme 
+      SET nm_filme    =   ?,
+        ds_sinopse    =   ?,
+        vl_avaliacao  =   ?,
+        dt_lancamento =   ?,
+        bt_disponivel =   ?,
+        id_usuario    =   ?
+      WHERE id_filme  =   ?` ;
+
+      const [resposta] = await con.query (comando,[filme.nome,filme.sinopse,filme.avaliacao,filme.lancamento,filme.disponivel,filme.usuario,id]);
+    return resposta.affectedRows;
+  }
